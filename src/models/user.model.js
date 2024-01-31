@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
 
 const userSchema = new mongoose.Schema({
    watchHistory: {
-      type: [{ type: Schema.Types.ObjectId, ref: 'Video' }],
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
       default: [],
    },
    username: {
