@@ -4,9 +4,14 @@
   "description": "backend practice ke liye",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
-  },
+  
+    "scripts": {
+      "lint": "eslint .",
+      "test": "jest",
+      "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+    },
+    
+  
   "keywords": [
     "javascript",
     "node"

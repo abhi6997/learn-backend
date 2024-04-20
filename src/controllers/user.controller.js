@@ -4,8 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import { watchFile } from "fs";
+
 
 const registerUser = asyncHandler(async (req, res) => {
   // get user details from frontend
@@ -118,6 +117,7 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!username && !email) {
     throw new ApiError(400, "either username or email is required");
   }
+  
 
   // find the user
   const user = await User.findOne({
@@ -160,7 +160,7 @@ const loginUser = asyncHandler(async (req, res) => {
           200,
           {
             user: loggedInUser,
-            accessToken, // not necessary to sent this here, as we already have a cookie, if you need immediate access then snet it
+            accessToken, // not necessary to sent this here, as we already have a cookie, if you need immediate access then sent it
             refreshToken,
           },
           "User logged In Succesfully"
@@ -419,19 +419,21 @@ const getMyWatchHistory = asyncHandler(async (req, res) => {
       },
 
       {$project:{
+        fullName:1,
         "watchHistory.title":1,
+        "watchHistory.videoFile":1,
         "watchHistory.description":1,
         "watchHistory.thumbanil":1,
         "watchHistory.duration":1,
         "watchHistory.views":1,
         "watchHistory.owner.fullName":1,
         "watchHistory.owner.username":1,
-        "watchHistory.avatar":1,
-       
+        "watchHistory.owner.avatar":1,
+        "watchHistory.owner.coverImage":1
         
       }},
       {$group:{
-        _id: new mongoose.Types.ObjectId(req.user._id),
+        _id: "$fullName",
         totalWatchedVideos:{$sum:1},
         watchHistory:{$push:"$watchHistory"},
         
